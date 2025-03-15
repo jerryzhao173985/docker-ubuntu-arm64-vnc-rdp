@@ -1,15 +1,10 @@
-# docker-ubuntu-arm64-vnc-rdp
-Connect to docker container running Ubuntu image on Mac M4 arm64 with port forwarding for VNC and XRDP viewer to connect on client.
-
-Below is a complete example of a GitHub README.md file that documents the project, including the Dockerfile, entrypoint script, usage instructions, and troubleshooting tips.
-
-⸻
-
-
-
 # Docker Development Environment with VNC, RDP, and SSH
 
 This repository provides a Docker-based development environment that is optimized for ARM64 (e.g. Mac M1). The container installs all required packages to build lpzrobots, creates a non-root user with VNC and RDP desktop access, and exposes SSH for terminal access.
+
+⸻
+
+Connect to docker container running Ubuntu image on Mac M4 arm64 with port forwarding for VNC and XRDP viewer to connect on client.
 
 > **Note:** This setup is intended for development use with tools such as VS Code, where you can mount your code via bind mounts and benefit from a consistent build environment.
 
@@ -209,33 +204,39 @@ For example, to mount your local lpzrobots code directory (e.g., ~/lpzrobots) in
 Note: Here, container SSH (port 22) is mapped to host port 2222. Adjust these values as needed.
 
 3. Accessing the Environment
-	•	VNC Access:
+	
+ •	VNC Access:
 Use a VNC client (e.g., TigerVNC or RealVNC) on your Mac to connect to:
 
-localhost:5900
+>localhost:5900
 
-Use the password 123456.
+>Use the password 123456.
 
-	•	RDP Access:
+	
+ •	RDP Access:
 Open Microsoft Remote Desktop (or any RDP client) and connect to:
 
-localhost:3389
+>localhost:3389
 
 When prompted, enter the credentials. Use user as the username and 123456 as the password.
 
-	•	SSH Access:
+	
+ •	SSH Access:
 Connect via SSH from your terminal:
 
-ssh user@localhost -p 2222
+>ssh user@localhost -p 2222
 
-Use the password 123456.
+>Use the password 123456.
 
-Development Best Practices
-	•	Persisting Code:
+### Development Best Practices
+	
+ •	Persisting Code:
 Use bind mounts (as shown in the run command) so that any code changes on your host are reflected in the container. This allows you to work with your favorite IDE (e.g., VS Code) using the Remote - Containers extension.
-	•	VS Code Integration:
+	
+ •	VS Code Integration:
 Create a .devcontainer/devcontainer.json file in your project for enhanced integration:
 
+```
 {
   "name": "lpzrobots C++ Dev",
   "dockerFile": "../Dockerfile",
@@ -257,27 +258,38 @@ Create a .devcontainer/devcontainer.json file in your project for enhanced integ
   ],
   "remoteUser": "user"
 }
+```
 
-
-	•	Version Control:
+	
+ •	Version Control:
 Keep your Dockerfile, entrypoint.sh, and development configuration files in version control for reproducibility and easy sharing with team members.
 
 Troubleshooting
-	•	VNC Issues:
-	•	If you encounter errors such as “Connection refused,” verify that the container is running and that port 5900 is correctly mapped.
-	•	Use a standalone VNC client (not a browser-based one) to avoid protocol issues.
-	•	RDP Connection Problems:
-	•	Ensure port 3389 is mapped and that xrdp is running by checking container logs with:
+	
+ 
+ •	VNC Issues:
+	
+ 
+ •	If you encounter errors such as “Connection refused,” verify that the container is running and that port 5900 is correctly mapped.
+	
+ 
+ •	Use a standalone VNC client (not a browser-based one) to avoid protocol issues.
+	
+ 
+ •	RDP Connection Problems:
+	
+ 
+ •	Ensure port 3389 is mapped and that xrdp is running by checking container logs with:
 
-docker logs lpzrobot
+### docker logs lpzrobot
 
+ 
+ •	If prompted for credentials via RDP, enter user and 123456.
 
-	•	If prompted for credentials via RDP, enter user and 123456.
-
-	•	SSH Access:
+•	SSH Access:
 Confirm the SSH server is running by checking logs or executing:
 
-docker exec -it lpzrobot ps aux | grep sshd
+>docker exec -it lpzrobot ps aux | grep sshd
 
 
 Below is an updated solution that adds RDP support via xrdp. In this configuration, we install the xrdp package and modify its configuration so that RDP connections are forwarded to the existing VNC server (running on display :0 via x11vnc). This lets you use Microsoft Remote Desktop (or any RDP client) to connect to your container’s desktop session.
@@ -285,7 +297,7 @@ Below is an updated solution that adds RDP support via xrdp. In this configurati
 Both the Dockerfile and the entrypoint script have been updated accordingly. (Make sure you rebuild your image after these changes.)
 
 ⸻
-
+```
 Dockerfile
 
 # Use Ubuntu 18.04 as the base image
@@ -507,3 +519,4 @@ The entrypoint script starts Xvfb and the XFCE4 desktop session, then x11vnc to 
 Ports 5900 (VNC), 22 (SSH), and 3389 (RDP) are exposed and mapped to the host so you can choose your preferred remote access method.
 
 This configuration should provide a working environment where you can connect via VNC or RDP from your Mac, while still having SSH access for terminal work.
+```
