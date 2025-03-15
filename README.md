@@ -7,9 +7,9 @@ Below is a complete example of a GitHub README.md file that documents the projec
 
 
 
-# lpzrobots Development Environment with VNC, RDP, and SSH
+# Docker Development Environment with VNC, RDP, and SSH
 
-This repository provides a Docker-based development environment for [lpzrobots](https://github.com/georgmartius/lpzrobots) that is optimized for ARM64 (e.g. Mac M1). The container installs all required packages to build lpzrobots, creates a non-root user with VNC and RDP desktop access, and exposes SSH for terminal access.
+This repository provides a Docker-based development environment that is optimized for ARM64 (e.g. Mac M1). The container installs all required packages to build lpzrobots, creates a non-root user with VNC and RDP desktop access, and exposes SSH for terminal access.
 
 > **Note:** This setup is intended for development use with tools such as VS Code, where you can mount your code via bind mounts and benefit from a consistent build environment.
 
@@ -184,20 +184,21 @@ sleep 2
 
 echo "Container started. SSH is on port 22, VNC is on port 5900, and RDP is on port 3389."
 tail -f /dev/null
+```
 
-Usage Instructions
+### Usage Instructions
 
 1. Build the Docker Image
 
 Run the following command in the directory containing the Dockerfile and entrypoint.sh:
 
-docker build -t lpzrobots-vnc-rdp .
+>docker build -t lpzrobots-vnc-rdp .
 
 2. Run the Container
 
 For example, to mount your local lpzrobots code directory (e.g., ~/lpzrobots) into the container and map the ports:
 
-docker run -d \
+>docker run -d \
   -p 5900:5900 \
   -p 2222:22 \
   -p 3389:3389 \
